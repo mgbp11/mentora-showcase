@@ -1,359 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mentora · iOS prototype</title>
-<meta name="description" content="Mentora: a personal AI private tutor for ages 2 to 60+. Native SwiftUI iOS prototype, 31 files, 22 screens, four age variants.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mentora · interactive prototype</title>
+<meta name="description" content="Mentora: a personal AI private tutor for ages 2 to 60+. Clickable prototype of the native iOS app.">
+<meta name="theme-color" content="#FAF6EF">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --teal:#147D74; --teal-text:#147D74; --teal-tint:#E3F0EC; --teal-border:#CFE3DC; --teal-deep:#0C5A55;
-  --apricot:#FF8A5C; --apricot-fill:#D8543D; --apricot-tint:#FFE9DD; --apricot-text:#8A4326;
-  --sun:#FFC24B; --sun-tint:#FFF3D9; --sun-border:#F2DCA8; --sun-text:#8A6413;
-  --ink:#17313A; --paper:#FAF6EF; --paper-warm:#FFF6E6; --card:#fff; --border:#EAE2D4;
-  --muted:#5F706B; --body:#3F5450; --track:#EDE6D8;
-  --shadow:rgba(23,49,58,.08);
-  --maxw:1180px;
-}
-:root:not([data-theme="light"]){}
-@media (prefers-color-scheme: dark){
-  :root{
-    --teal-text:#5AC4B5; --teal-tint:#123330; --teal-border:#1E4C46; --teal-deep:#8FDBCE;
-    --apricot:#FF9A70; --apricot-tint:#35211A; --apricot-text:#FFBFA1;
-    --sun-tint:#342B17; --sun-border:#4E4123; --sun-text:#F3CE7C;
-    --ink:#F1ECE3; --paper:#121F26; --paper-warm:#18272C; --card:#18272E; --border:#27393F;
-    --muted:#9BAAA5; --body:#C7D3CF; --track:#27393F;
-    --shadow:rgba(0,0,0,.4);
-  }
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;background:var(--paper);color:var(--ink);
-  font-family:'Instrument Sans',system-ui,-apple-system,sans-serif;
-  -webkit-font-smoothing:antialiased;line-height:1.55;
-}
-h1,h2,h3{font-family:'Bricolage Grotesque','Instrument Sans',sans-serif;letter-spacing:-.02em;margin:0}
-a{color:var(--teal-text)}
-.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
-section{padding:76px 0;border-top:1px solid var(--border)}
-section:first-of-type{border-top:none}
-.lede{font-size:1.02rem;color:var(--muted);max-width:62ch;margin:14px 0 0}
-
-/* ---------- hero ---------- */
-.hero{padding:84px 0 68px;background:linear-gradient(180deg,var(--paper-warm),var(--paper))}
-.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center}
-.orb{width:64px;height:64px;border-radius:50%;
-  background:radial-gradient(circle at 32% 28%,#FFE0B8 0%,#FFA76E 40%,#1C8F84 82%,#0C5A55 100%);
-  box-shadow:0 0 0 3px var(--apricot-tint)}
-.hero h1{font-size:clamp(2.6rem,5.6vw,4.1rem);line-height:1.02;margin:22px 0 0;font-weight:800}
-.tagline{font-size:1.12rem;color:var(--body);margin:16px 0 0;max-width:34ch}
-.facts{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
-.pill{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:8px 15px;
-  font-size:.83rem;font-weight:600;background:var(--card);border:1px solid var(--border);color:var(--body)}
-.pill.sun{background:var(--sun-tint);border-color:var(--sun-border);color:var(--sun-text)}
-.pill.teal{background:var(--teal-tint);border-color:var(--teal-border);color:var(--teal-deep)}
-.hero-shots{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:end}
-.hero-shots .device:nth-child(2){transform:translateY(-22px)}
-
-/* ---------- device frame ---------- */
-.device{background:#14181b;border-radius:30px;padding:6px;box-shadow:0 18px 44px var(--shadow);
-  border:1px solid rgba(255,255,255,.06)}
-.device img{display:block;width:100%;border-radius:24px}
-figure{margin:0}
-figcaption{margin-top:11px;font-size:.82rem;color:var(--muted);text-align:center}
-
-/* ---------- notice ---------- */
-.notice{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:26px 28px;
-  display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;box-shadow:0 4px 16px var(--shadow)}
-.notice .mark{width:38px;height:38px;border-radius:12px;background:var(--sun-tint);
-  border:1px solid var(--sun-border);display:grid;place-items:center;font-size:1.1rem}
-.notice p{margin:8px 0 0;color:var(--body);font-size:.95rem}
-.notice strong{color:var(--ink)}
-
-/* ---------- filmstrip ---------- */
-.strip{display:flex;gap:20px;overflow-x:auto;padding:6px 24px 22px;scroll-snap-type:x mandatory;
-  margin:0 -24px}
-.strip>figure{flex:0 0 232px;scroll-snap-align:center}
-.strip::-webkit-scrollbar{height:7px}
-.strip::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
-
-/* ---------- grids ---------- */
-.four{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:26px}
-.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:24px}
-.age{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:16px;
-  box-shadow:0 4px 16px var(--shadow)}
-.age h3{font-size:1.02rem}
-.age p{margin:5px 0 14px;font-size:.83rem;color:var(--muted);min-height:3.2em}
-
-/* ---------- tokens ---------- */
-.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:14px}
-.sw{border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--card)}
-.sw .chip{height:62px}
-.sw .meta{padding:11px 13px}
-.sw b{display:block;font-size:.86rem}
-.sw code{font-size:.74rem;color:var(--muted);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
-
-table{width:100%;border-collapse:collapse;font-size:.9rem}
-.scroller{overflow-x:auto}
-th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:top}
-th{font-size:.74rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700}
-td code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.83rem;color:var(--body)}
-.was{color:var(--apricot-text);font-weight:600}
-.now{color:var(--teal-deep);font-weight:600}
-
-.cols{display:grid;grid-template-columns:1fr 1fr;gap:44px}
-.cols h3{font-size:1.05rem;margin-bottom:10px}
-.cols ul{margin:0;padding-left:19px;color:var(--body);font-size:.94rem}
-.cols li{margin-bottom:9px}
-
-footer{padding:56px 0 72px;border-top:1px solid var(--border);color:var(--muted);font-size:.88rem}
-footer code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82rem}
-kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--card);
-  border:1px solid var(--border);border-radius:6px;padding:2px 7px;font-size:.8rem;color:var(--body)}
-
-@media (max-width:900px){
-  .hero-grid{grid-template-columns:1fr;gap:38px}
-  .hero-shots{grid-template-columns:repeat(3,1fr)}
-  .four{grid-template-columns:1fr 1fr}
-  .two,.cols{grid-template-columns:1fr;gap:28px}
-  section{padding:56px 0}
-}
-@media (max-width:560px){
-  .four{grid-template-columns:1fr}
-  .notice{grid-template-columns:1fr}
-}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-</style>
+<link rel="stylesheet" href="app.css">
 </head>
 <body>
 
-<header class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <div class="orb"></div>
-      <h1>Mentora</h1>
-      <p class="tagline">Your Private Teacher. For Anything. For Life.</p>
-      <p class="lede">A personal AI tutor for ages 2 to 60+, rebuilt as a native SwiftUI app. Not an LMS and not a chatbot: the tutor is the main character of every screen.</p>
-      <div class="facts">
-        <span class="pill teal">SwiftUI · iOS 17+</span>
-        <span class="pill">22 screens</span>
-        <span class="pill">31 files · 5,900 lines</span>
-        <span class="pill sun">4 age variants</span>
-      </div>
-    </div>
-    <div class="hero-shots">
-      <div class="device"><img src="shots/home.jpg" alt="Mentora Home screen" loading="eager"></div>
-      <div class="device"><img src="shots/tutor.jpg" alt="Mentora Tutor screen" loading="eager"></div>
-      <div class="device"><img src="shots/lesson.jpg" alt="Mentora live lesson" loading="eager"></div>
+<button id="railToggle" aria-label="Prototype controls">⚙</button>
+<aside class="rail" id="rail">
+  <div>
+    <h1 class="disp">Mentora</h1>
+    <p class="sub">Your Private Teacher. For Anything. For Life. Tap through the prototype, it is fully clickable.</p>
+  </div>
+
+  <div class="rail-card">
+    <div class="rail-lab">Age band</div>
+    <div class="seg">
+      <button data-r="age:5">Age 5</button><button data-r="age:13">Age 13</button>
+      <button data-r="age:20">Age 20</button><button data-r="age:40">Age 40</button>
     </div>
   </div>
-</header>
 
-<section>
-  <div class="wrap">
-    <div class="notice">
-      <div class="mark">📱</div>
-      <div>
-        <h2 style="font-size:1.2rem">This page is a gallery, not the app</h2>
-        <p>Mentora is a compiled <strong>SwiftUI iOS app</strong>. It cannot run on the web, so every image below is a real screenshot captured from the app running on an iPhone 17 Pro simulator, iOS 26.5. Nothing here is a mockup or a render.</p>
-        <p>To run it: open <code>Mentora-iOS/Mentora.xcodeproj</code> in Xcode and press Run. To put it on a phone, the route is TestFlight, which needs an Apple Developer account.</p>
-      </div>
+  <div class="rail-card">
+    <div class="rail-lab">State</div>
+    <div class="seg">
+      <button data-r="state:first">First-time</button><button data-r="state:active">Active</button>
+      <button data-r="state:streak">Streak</button><button data-r="state:goal">Goal done</button>
+      <button data-r="state:struggle">Struggling</button>
     </div>
   </div>
-</section>
 
-<section>
-  <div class="wrap">
-    <h2 style="font-size:1.9rem">The core loop</h2>
-    <p class="lede">Onboarding hands you a tutor. The tutor speaks first, with memory of yesterday. One primary action, then a lesson that behaves like a conversation rather than an article.</p>
-  </div>
-  <div class="wrap">
-    <div class="strip">
-      <figure><div class="device"><img src="shots/welcome.jpg" alt="Welcome screen" loading="lazy"></div><figcaption>Welcome</figcaption></figure>
-      <figure><div class="device"><img src="shots/home.jpg" alt="Home" loading="lazy"></div><figcaption>Home</figcaption></figure>
-      <figure><div class="device"><img src="shots/tutor.jpg" alt="Tutor" loading="lazy"></div><figcaption>Tutor</figcaption></figure>
-      <figure><div class="device"><img src="shots/lesson.jpg" alt="Live lesson" loading="lazy"></div><figcaption>Live lesson</figcaption></figure>
-      <figure><div class="device"><img src="shots/complete.jpg" alt="Lesson complete" loading="lazy"></div><figcaption>Lesson complete</figcaption></figure>
-      <figure><div class="device"><img src="shots/voice.jpg" alt="Voice tutor mode" loading="lazy"></div><figcaption>Voice mode</figcaption></figure>
+  <div class="rail-card">
+    <div class="rail-lab">Appearance</div>
+    <div class="seg">
+      <button data-r="theme:light">Light</button><button data-r="theme:dark">Dark</button>
+    </div>
+    <div class="rail-lab" style="margin:12px 0 8px">Layout direction</div>
+    <div class="seg">
+      <button data-r="rtl:false">English</button><button data-r="rtl:true">עברית RTL</button>
     </div>
   </div>
-</section>
 
-<section>
-  <div class="wrap">
-    <h2 style="font-size:1.9rem">One product, four ages</h2>
-    <p class="lede">The age band is structural, not a skin. It changes the tab bar (five tabs, or three for ages 2 to 7), the type scale, the copy register and the density.</p>
-    <div class="four" style="margin-top:34px">
-      <div class="age">
-        <div class="device"><img src="shots/age5-home.jpg" alt="Home for ages 2 to 7" loading="lazy"></div>
-        <h3 style="margin-top:14px">Age 5</h3>
-        <p>Voice first. One giant button, stars instead of statistics, three tabs, type scaled up 15%.</p>
-      </div>
-      <div class="age">
-        <div class="device"><img src="shots/age13-home.jpg" alt="Home for teenagers" loading="lazy"></div>
-        <h3 style="margin-top:14px">Age 13</h3>
-        <p>Ink header, weekly XP, daily challenge, light social proof. Gamified without being childish.</p>
-      </div>
-      <div class="age">
-        <div class="device"><img src="shots/home.jpg" alt="Home for adults" loading="lazy"></div>
-        <h3 style="margin-top:14px">Age 20</h3>
-        <p>The default look. Clean, goal-oriented, one primary action and no stat grids.</p>
-      </div>
-      <div class="age">
-        <div class="device"><img src="shots/age40-home.jpg" alt="Home for adults 35 plus" loading="lazy"></div>
-        <h3 style="margin-top:14px">Age 40</h3>
-        <p>Quiet and efficient. Smaller type, outcome-tied copy, gamification reduced to a whisper.</p>
-      </div>
-    </div>
+  <div class="rail-card">
+    <div class="seg"><button data-r="reset:1" style="flex:1">↺ Start over</button></div>
   </div>
-</section>
 
-<section>
-  <div class="wrap">
-    <h2 style="font-size:1.9rem">Light and dark</h2>
-    <p class="lede">Every colour token is adaptive. Neither mode uses pure black or pure white, and every foreground and background pair in the app meets WCAG AA in both.</p>
-    <div class="two" style="margin-top:34px">
-      <figure>
-        <div class="four" style="grid-template-columns:1fr 1fr;gap:18px">
-          <div class="device"><img src="shots/home.jpg" alt="Home in light mode" loading="lazy"></div>
-          <div class="device"><img src="shots/goals.jpg" alt="Goals in light mode" loading="lazy"></div>
-        </div>
-        <figcaption>Light</figcaption>
-      </figure>
-      <figure>
-        <div class="four" style="grid-template-columns:1fr 1fr;gap:18px">
-          <div class="device"><img src="shots/dark-home.jpg" alt="Home in dark mode" loading="lazy"></div>
-          <div class="device"><img src="shots/dark-goals.jpg" alt="Goals in dark mode" loading="lazy"></div>
-        </div>
-        <figcaption>Dark</figcaption>
-      </figure>
-    </div>
+  <p class="hint">This is a web port of a native SwiftUI app, built from the same design tokens and copy.
+    <a href="gallery.html">See the real iOS build →</a></p>
+</aside>
+
+<main id="stage">
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="screen" id="screen"></div>
   </div>
-</section>
+</main>
 
-<section>
-  <div class="wrap">
-    <h2 style="font-size:1.9rem">Live tutoring</h2>
-    <p class="lede">Mentora can run its tutor against a self-hosted <a href="https://github.com/Open-TutorAi/open-tutor-ai-CE">Open TutorAI CE</a> server. That project is Python and Svelte, so there is no Swift to reuse: the app ships a client written against its HTTP API. Without a server every screen still works on built-in content.</p>
-    <div class="two" style="margin-top:34px;grid-template-columns:1fr 1.15fr;align-items:start">
-      <div class="four" style="grid-template-columns:1fr 1fr;gap:18px">
-        <figure><div class="device"><img src="shots/live-tutor.jpg" alt="Live tutor reply" loading="lazy"></div><figcaption>Live reply</figcaption></figure>
-        <figure><div class="device"><img src="shots/server-live.jpg" alt="Server settings" loading="lazy"></div><figcaption>Connection</figcaption></figure>
-      </div>
-      <div class="scroller">
-        <table>
-          <thead><tr><th>Mentora screen</th><th>Endpoint</th></tr></thead>
-          <tbody>
-            <tr><td>Tutor, live replies</td><td><code>POST /api/chat/completions</code></td></tr>
-            <tr><td>Tutor, quick actions</td><td><code>same, as learner turns</code></td></tr>
-            <tr><td>Learn, your materials</td><td><code>GET /api/v1/supports/list</code></td></tr>
-            <tr><td>Course from materials</td><td><code>POST /api/v1/supports/create</code></td></tr>
-            <tr><td>Sign in</td><td><code>POST /api/v1/auths/signin</code></td></tr>
-            <tr><td>Model picker</td><td><code>GET /api/v1/models</code></td></tr>
-          </tbody>
-        </table>
-        <p class="lede" style="font-size:.9rem">The learner's age, tutor, level and goal are compiled into the system prompt. That is what makes one backend feel like four different tutors. The session token lives in the iOS Keychain; the password is never stored.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <h2 style="font-size:1.9rem">Design system</h2>
-    <p class="lede">Three hues with fixed roles, and never more than three on a screen. Teal carries action and trust, apricot is the tutor's warmth, sun is reserved for streaks and rewards.</p>
-    <div class="swatches" style="margin-top:30px">
-      <div class="sw"><div class="chip" style="background:#147D74"></div><div class="meta"><b>Teal</b><code>#147D74</code></div></div>
-      <div class="sw"><div class="chip" style="background:#FF8A5C"></div><div class="meta"><b>Apricot</b><code>#FF8A5C</code></div></div>
-      <div class="sw"><div class="chip" style="background:#FFC24B"></div><div class="meta"><b>Sun</b><code>#FFC24B</code></div></div>
-      <div class="sw"><div class="chip" style="background:#17313A"></div><div class="meta"><b>Ink</b><code>#17313A</code></div></div>
-      <div class="sw"><div class="chip" style="background:#FAF6EF;border-bottom:1px solid var(--border)"></div><div class="meta"><b>Paper</b><code>#FAF6EF</code></div></div>
-      <div class="sw"><div class="chip" style="background:#5F706B"></div><div class="meta"><b>Muted</b><code>#5F706B</code></div></div>
-    </div>
-
-    <div class="cols" style="margin-top:46px">
-      <div>
-        <h3>Accessibility pass</h3>
-        <p class="lede" style="margin-top:0">Five foreground and background pairs failed WCAG AA in the first build. The two worst were primary navigation and the largest button in the ages 2 to 7 experience.</p>
-        <div class="scroller">
-        <table style="margin-top:16px">
-          <thead><tr><th>Pair</th><th>Was</th><th>Now</th></tr></thead>
-          <tbody>
-            <tr><td>Inactive tab labels</td><td class="was">2.49:1</td><td class="now">4.86:1</td></tr>
-            <tr><td>White on apricot</td><td class="was">2.32:1</td><td class="now">4.00:1</td></tr>
-            <tr><td>Secondary text</td><td class="was">3.64:1</td><td class="now">4.85:1</td></tr>
-            <tr><td>Needs-practice amber</td><td class="was">3.21:1</td><td class="now">4.53:1</td></tr>
-            <tr><td>Disabled button</td><td class="was">1.73:1</td><td class="now">5.23:1</td></tr>
-          </tbody>
-        </table>
-        </div>
-      </div>
-      <div>
-        <h3>Rules the build holds to</h3>
-        <ul>
-          <li><strong>Shape:</strong> four radii, one role each. 24 containers, 18 bubbles and docks, 16 controls, 12 nested, pill for chips.</li>
-          <li><strong>Motion:</strong> the presence orb only breathes while the tutor is listening or speaking. At rest it is a still outline, so no screen carries an unmotivated loop.</li>
-          <li><strong>Type:</strong> Bricolage Grotesque for display, Instrument Sans for text, scaling up 15% for ages 2 to 7 and down 6% for 35+.</li>
-          <li><strong>Copy:</strong> zero em-dashes, and no gendered pronouns for a tutor the learner picks.</li>
-          <li><strong>RTL:</strong> Hebrew right-to-left layout is fully mirrored, including progress fills and tab order.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <h2 style="font-size:1.9rem">Five states</h2>
-    <p class="lede">The same Home screen, carrying the five situations the brief asks the product to handle.</p>
-    <div class="four" style="margin-top:34px">
-      <figure><div class="device"><img src="shots/state-first.jpg" alt="First-time user state" loading="lazy"></div><figcaption>First-time user</figcaption></figure>
-      <figure><div class="device"><img src="shots/home.jpg" alt="Active learner state" loading="lazy"></div><figcaption>Active learner</figcaption></figure>
-      <figure><div class="device"><img src="shots/state-goal.jpg" alt="Goal completed state" loading="lazy"></div><figcaption>Goal completed</figcaption></figure>
-      <figure><div class="device"><img src="shots/state-struggle.jpg" alt="Struggling learner state" loading="lazy"></div><figcaption>Struggling</figcaption></figure>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <h2 style="font-size:1.9rem">Every screen</h2>
-    <p class="lede">Twenty-two screens, all captured from the running app.</p>
-    <div class="gallery" style="margin-top:34px">
-      <figure><div class="device"><img src="shots/learn.jpg" alt="Learn" loading="lazy"></div><figcaption>Learn</figcaption></figure>
-      <figure><div class="device"><img src="shots/live-learn.jpg" alt="Learn with server materials" loading="lazy"></div><figcaption>Your materials</figcaption></figure>
-      <figure><div class="device"><img src="shots/course.jpg" alt="Course from materials" loading="lazy"></div><figcaption>Course from materials</figcaption></figure>
-      <figure><div class="device"><img src="shots/homework.jpg" alt="Homework marking" loading="lazy"></div><figcaption>Homework</figcaption></figure>
-      <figure><div class="device"><img src="shots/goals.jpg" alt="Goals" loading="lazy"></div><figcaption>Goals</figcaption></figure>
-      <figure><div class="device"><img src="shots/goal-detail.jpg" alt="Goal roadmap" loading="lazy"></div><figcaption>Goal roadmap</figcaption></figure>
-      <figure><div class="device"><img src="shots/progress.jpg" alt="Progress" loading="lazy"></div><figcaption>Progress</figcaption></figure>
-      <figure><div class="device"><img src="shots/achievements.jpg" alt="Achievements" loading="lazy"></div><figcaption>Achievements</figcaption></figure>
-      <figure><div class="device"><img src="shots/age5-tutor.jpg" alt="Tutor for young children" loading="lazy"></div><figcaption>Tutor, ages 2 to 7</figcaption></figure>
-      <figure><div class="device"><img src="shots/age5-stars.jpg" alt="Stars" loading="lazy"></div><figcaption>Stars</figcaption></figure>
-      <figure><div class="device"><img src="shots/parent.jpg" alt="Parent dashboard" loading="lazy"></div><figcaption>Parent dashboard</figcaption></figure>
-      <figure><div class="device"><img src="shots/settings.jpg" alt="Profile and settings" loading="lazy"></div><figcaption>Profile &amp; settings</figcaption></figure>
-      <figure><div class="device"><img src="shots/server.jpg" alt="Server settings" loading="lazy"></div><figcaption>Server settings</figcaption></figure>
-      <figure><div class="device"><img src="shots/rtl.jpg" alt="Hebrew right to left layout" loading="lazy"></div><figcaption>Hebrew RTL</figcaption></figure>
-      <figure><div class="device"><img src="shots/dark-tutor.jpg" alt="Tutor in dark mode" loading="lazy"></div><figcaption>Tutor, dark</figcaption></figure>
-      <figure><div class="device"><img src="shots/dark-lesson.jpg" alt="Lesson in dark mode" loading="lazy"></div><figcaption>Lesson, dark</figcaption></figure>
-      <figure><div class="device"><img src="shots/dark-progress.jpg" alt="Progress in dark mode" loading="lazy"></div><figcaption>Progress, dark</figcaption></figure>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap">
-    <p style="margin:0 0 16px"><strong style="color:var(--ink)">Run it locally</strong></p>
-    <p style="margin:0 0 8px">Open <code>Mentora-iOS/Mentora.xcodeproj</code> and press Run. Any screen can be opened directly:</p>
-    <p style="margin:0 0 22px"><kbd>xcrun simctl launch booted com.mentora.prototype -age 13 -state streak -tab home</kbd></p>
-    <p style="margin:0">Screenshots captured on iPhone 17 Pro, iOS 26.5. Open TutorAI CE is BSD-3-Clause; Mentora ships a client for its HTTP API and copies none of its code.</p>
-  </div>
-</footer>
-
+<script src="app.js"></script>
+<script src="screens.js"></script>
+<script src="shell.js"></script>
 </body>
 </html>
